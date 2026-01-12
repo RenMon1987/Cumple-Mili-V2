@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>¡Feliz Cumple Mili! 🎸</title>
+
+<style>
+  :root{
+    /* Nuevos colores extraídos de la gráfica de Cosquín Rock */
+    --bg-teal: #3b6e78; /* El azul petróleo del fondo */
+    --bg-dark-teal: #2a4f56; /* Una versión más oscura para gradientes */
+    
+    --ink: #ffffff;
+    --muted: rgba(255,255,255,.9); /* Texto un poco más blanco para que lea bien sobre el azul */
+    
+    --accent: #e45700; /* Naranja rockero */
+    --accent2: #ff7a1a;
+    --red: #ff2d2d;
+  }
+
+  *{ box-sizing:border-box; }
+  
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-teal); /* Cambio de fondo general */
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .screen{ display:none; min-height:100vh; }
+  .active{ display:block; }
+
+  /* ========== PORTADA ========== */
+  /* Sin cambios estructurales, solo aseguramos que cubra todo */
+  .portada{
+    width:100vw;
+    height:100vh;
+    position:relative;
+    background:
+      /* Mantenemos los destellos naranjas sutiles */
+      radial-gradient(800px 500px at 15% 20%, rgba(228,87,0,.18), rgba(228,87,0,0) 60%),
+      url("portada_desktop.png") center/cover no-repeat;
+  }
+
+  /* Sombra para que el botón resalte */
+  .portada::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(42, 79, 86, 0.6), rgba(0,0,0,0) 50%);
+    pointer-events:none;
+  }
+
+  .portada-btn{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:50px; /* Un poco más arriba */
+    z-index:2;
+    padding:16px 32px;
+    border-radius:50px; /* Más redondeado, estilo rock moderno */
+    border:2px solid rgba(255,255,255,.3);
+    background: linear-gradient(135deg, var(--accent), #b43a00);
+    color:#fff;
+    font-weight:800;
+    font-size:1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease;
+  }
+  
+  .portada-btn:active {
+    transform: translateX(-50%) scale(0.95);
+  }
+
+  /* -------- MOBILE -------- */
+  @media (max-width: 768px){
+    .portada{
+      background: url("portada_mobile.png") center/cover no-repeat;
+    }
+    .portada-btn{
+      bottom:8vh; /* Ajuste relativo a la altura en celular */
+      width: 80%; /* Botón más ancho en celular para fácil click */
+    }
+  }
+
+  /* ========== SALUDO (Modificado) ========== */
+  .saludo{
+    /* Fondo azul petróleo con viñeta para dar profundidad */
+    background: 
+      radial-gradient(circle at center, var(--bg-teal) 0%, var(--bg-dark-teal) 100%);
+    padding: 40px 20px 80px;
+    position:relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Textura de ruido sutil opcional para imitar el papel del poster (simulado con CSS) */
+  .saludo::before {
+    content: "";
+    position: absolute; inset:0;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .wrap{ 
+    max-width:800px; 
+    width: 100%;
+    margin:0 auto; 
+    z-index: 1; /* Para estar sobre la textura */
+  }
+
+  .headline{
+    margin:0 0 20px;
+    font-size:clamp(2rem, 4vw, 3rem);
+    font-weight:900;
+    text-align: center;
+    line-height: 1.1;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+  }
+
+  .headline span{
+    color: var(--accent2);
+    display: block;
+    font-size: 0.8em;
+    margin-top: 5px;
+  }
+
+  .copy-box{
+    background: rgba(0, 0, 0, 0.25); /* Fondo oscuro translúcido para leer bien */
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(4px); /* Efecto vidrio sutil */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .copy-box p{
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  
+  .copy-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .destacado {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* Marco de la tarjeta */
+  .ticket-frame{
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius:18px;
+    padding:10px;
+    /* Un borde degradado sutil */
+    background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0)); 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: rotate(-1deg); /* Un pequeño giro para darle onda */
+    transition: transform 0.3s ease;
+  }
+  
+  .ticket-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  .ticket-img{
+    width:100%;
+    border-radius:12px;
+    display: block;
+  }
+
+  .firma{
+    margin-top: 40px;
+    text-align:center;
+    font-size: 1rem;
+    opacity: 0.9;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 20px;
+    width: 100%;
+  }
+  
+  .firma strong {
+    font-size: 1.2rem;
+    color: var(--accent2);
+  }
+
+</style>
+</head>
+
+<body>
+
+<section id="screen1" class="screen active portada">
+  <button class="portada-btn" onclick="goToScreen2()">Ver Regalo 🎁</button>
+</section>
+
+<section id="screen2" class="screen saludo">
+  <div class="wrap">
+    
+    <h1 class="headline">¡Feliz cumple, Mili! 🎉</h1>
+
+    <div class="copy-box">
+      <p>Queremos decirte lo importante que sos para todo el equipo. Tu alegría, tu buena onda y ese toque especial que le ponés a todo hacen que trabajar juntos sea un placer.</p>
+      
+      <p>Desde todo el equipo de <strong>Medison Argentina</strong>, esperamos que este regalo se traduzca en dos días a puro rock, música, baile y diversión! 🤘🎶</p>
+      
+      <p class="destacado">¡Disfrutalo a pleno, te lo re merecés!</p>
+    </div>
+
+    <div class="ticket-frame">
+      <img class="ticket-img" src="tarjeta.png" alt="Entrada Cosquín Rock">
+    </div>
+
+    <div class="firma">
+      Con cariño,<br>
+      <strong>Todo el equipo de Medison Argentina</strong><br>
+      <span style="font-size:0.9em; opacity:0.8; margin-top:5px; display:block;">14–15 de febrero · Santa María de Punilla</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  function goToScreen2(){
+    // Ocultar portada
+    document.getElementById("screen1").classList.remove("active");
+    
+    // Mostrar saludo con una pequeña animación de entrada (opcional con CSS, aquí simple)
+    const screen2 = document.getElementById("screen2");
+    screen2.classList.add("active");
+    
+    // Scrollear al tope
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>
